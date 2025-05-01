@@ -3,30 +3,83 @@ const REDIRECT_URI = "https://ruizamdev.github.io/spotify-mkpl/";
 const SCOPES = "user-library-read playlist-modify-public";
 const TOKEN_KEY = "spotify_access_token";
 
-// 1. Revisa si ya tenemos token
-window.onload = function () {
-  const hash = window.location.hash;
-  if (hash) {
-    const token = new URLSearchParams(hash.slice(1)).get("access_token");
-    if (token) {
-      localStorage.setItem(TOKEN_KEY, token);
-      window.location.hash = "";
-    }
+// 0
+function generateRandomString(length) {
+  let text = '';
+  const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  for (let i = 0; i < length; i++) {
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
   }
+  return text;
+}
 
-  const token = localStorage.getItem(TOKEN_KEY);
-  if(token) {
+async function generateCodeChallenge(codeVerifier) {
+  const data = new TextEncoder().encode(codeVerifier);
+  const digest = await window.crypto.subtle.digest('SHA-256', data);
+  return btoa(String.fromCharCode(...new Uint8Array(digest)))
+    .replace(/\+/g, '-')
+    .replace(/\//g, '_')
+    .replace(/=+$/, '');
+}
+
+
+// 1. Revisa si ya tenemos token
+window.onload = async function () {
+  const params = new URLSearchParams(window.location.search);
+  const code = params.get("code");
+
+  if(code) {
+    const codeVerifier = localStorage.getItem("code_verifier");
+
+    const body = new URLSearchParams({
+      grant_type: "authorization_code",
+      code,
+      redirect_uri: REDIRECT_URI,
+      client_id: CLIENT_ID,
+      code_verifier: codeVerifier
+    });
+    
+    const response = await fetch("https://accounts.spotify.com/api/token", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      body
+    });
+
+    const data = await response.json();
+    const token = data.acces_token;
+    localStorage.setItem(TOKEN_KEY, token);
+    window.history.replaceState({}, document.title, "/");
+
     document.getElementById("login-button").style.display = "none";
     document.getElementById("playlist-form").style.display = "block";
+  } else {
+    const token = localStorage.getItem(TOKEN_KEY);
+    if (token) {
+      document.getElementById("login-button").style.display = "none";
+      document.getElementById("playlist-form").style.display = "block";
+    }
   }
 };
 
 // 2. Login con Spotify
-document.getElementById("login-button").addEventListener("click", () => {
-  console.log("Click en login detectado")
-  const authUrl = `https://accounts.spotify.com/authorize?client_id=${CLIENT_ID}&response_type=token&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&scope=${encodeURIComponent(SCOPES)}&show_dialog=true`;
-  console.log(authUrl);
-  // window.location.href = authUrl;
+document.getElementById("login-button").addEventListener("click", async () => {
+  const codeVerifier = generateRandomString(128);
+  const codeChallenge = await generateCodeChallenge(codeVerifier);
+
+  localStorage.setItem("code_verifier", codeVerifier);
+
+  const args = new URLSearchParams({
+    response_type: "code",
+    client_id: CLIENT_ID,
+    scope: SCOPES,
+    redirect_uri: REDIRECT_URI,
+    code_challenge_method: "S256",
+    code_challenge: codeChallenge
+  });
+
+  window.location = `https://accounts.spotify.com/authorize?${args.toString()}`;
 })
 
 // 3. Obtenemos User liked songs
