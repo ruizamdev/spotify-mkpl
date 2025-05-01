@@ -84,7 +84,7 @@ document.getElementById("login-button").addEventListener("click", async () => {
 
 // 3. Obtenemos User liked songs
 async function getLikedSongs(maxTracks = 1000) {
-  const token = localstorage.getItem(TOKEN_KEY);
+  const token = localStorage.getItem(TOKEN_KEY);
   let allTracks = [];
   let offset = 0;
   const limit = 50;
