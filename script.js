@@ -48,7 +48,7 @@ window.onload = async function () {
     });
 
     const data = await response.json();
-    const token = data.acces_token;
+    const token = data.access_token;
     localStorage.setItem(TOKEN_KEY, token);
     window.history.replaceState({}, document.title, "/");
 
