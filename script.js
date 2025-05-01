@@ -25,8 +25,8 @@ window.onload = function () {
 document.getElementById("login-button").addEventListener("click", () => {
   console.log("Click en login detectado")
   const authUrl = `https://accounts.spotify.com/authorize?client_id=${CLIENT_ID}&response_type=token&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&scope=${encodeURIComponent(SCOPES)}&show_dialog=true`;
-
-  window.location.href = authUrl;
+  console.log(authUrl);
+  // window.location.href = authUrl;
 })
 
 // 3. Obtenemos User liked songs
@@ -100,7 +100,7 @@ document.getElementById("playlist-form").addEventListener("submit", async (e) =>
 
   const playlistUrl = await createPlaylist(gptResult.playlist_name, gptResult.tracks);
   output.innerHTML = `✅ Playlist creada: <a href="${playlistUrl}" target="_blank">${gptResult.playlist_name}</a>`;
-});
+})
 
 // 5. Hablar con ChatGPT
 async function fetchFromGPT(prompt, tracks) {
