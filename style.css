@@ -28,7 +28,7 @@ label {
   margin: 1rem 0 0.5rem;
 }
 
-select, textarea, button {
+select, textarea, button, #apikey {
   width: 100%;
   padding: 0.8rem;
   margin-bottom: 1rem;
