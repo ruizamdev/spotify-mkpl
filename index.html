@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Playlist Miner 🎧</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main>
+    <h1>🎧 Playlist Miner</h1>
+
+    <button id="login-button">Login con Spotify</button>
+
+    <form id="playlist-form" style="display:none;">
+      <label for="source">Origen de la música:</label>
+      <select id="source">
+        <option value="liked">Mis canciones favoritas</option>
+        <option value="global">Toda la música de Spotify</option>
+      </select>
+
+      <label for="prompt">Prompt para crear la playlist:</label>
+      <textarea id="prompt" rows="4" placeholder="Ej: Agrupa mis canciones favoritas por género..."></textarea>
+
+      <button type="submit">🎵 Generar Playlist</button>
+    </form>
+
+    <pre id="output"></pre>
+  </main>
+
+  <script src=".env.local.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
