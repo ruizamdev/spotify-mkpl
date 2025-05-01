@@ -23,9 +23,8 @@ window.onload = function () {
 
 // 2. Login con Spotify
 document.getElementById("login-button").addEventListener("click", () => {
-  const authUrl = `https://accounts.spotify.com/authorize?response_type=token&client_id=${CLIENT_ID}&scope=${encodeURIComponent(
-    SCOPES
-  )}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}`;
+  console.log("Click en login detectado")
+  const authUrl = `https://accounts.spotify.com/authorize?client_id=${CLIENT_ID}&response_type=token&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&scope=${encodeURIComponent(SCOPES)}&show_dialog=true`;
 
   window.location.href = authUrl;
 })
