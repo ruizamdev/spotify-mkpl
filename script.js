@@ -156,7 +156,17 @@ document.getElementById("playlist-form").addEventListener("submit", async (e) =>
 
 // 5. Hablar con ChatGPT
 async function fetchFromGPT(prompt, tracks) {
-  const apiKey = document.getElementById("apiKey").value.trim();
+  const apiKeyInput = document.getElementById("apiKey");
+  if (!apiKeyInput) {
+    console.error("No se encontró el input para la API key.");
+    return "error: no se ingreso la API key.";
+  }
+
+  const apiKey = apiKeyInput.value.trim();
+  if (!apiKey) {
+    return "Por favor, ingresa tu API key de OpenAI.";
+  }
+
   const content = `
 Tu tarea es generar una nueva playlist en formato JSON.
 
