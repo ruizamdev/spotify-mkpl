@@ -3,7 +3,7 @@ const REDIRECT_URI = "https://ruizamdev.github.io/spotify-mkpl/";
 const SCOPES = "user-library-read playlist-modify-public";
 const TOKEN_KEY = "spotify_access_token";
 
-// 0
+// 0. 
 function generateRandomString(length) {
   let text = '';
   const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -21,7 +21,6 @@ async function generateCodeChallenge(codeVerifier) {
     .replace(/\//g, '_')
     .replace(/=+$/, '');
 }
-
 
 // 1. Revisa si ya tenemos token
 window.onload = async function () {
