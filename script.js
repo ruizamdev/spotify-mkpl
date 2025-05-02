@@ -156,6 +156,8 @@ document.getElementById("playlist-form").addEventListener("submit", async (e) =>
 
 // 5. Hablar con ChatGPT
 async function fetchFromGPT(prompt, tracks) {
+  console.log("🚀 fetchFromGPT() llamado. input:", document.getElementById("apikey"));
+
   const apiKeyInput = document.getElementById("apiKey");
   if (!apiKeyInput) {
     console.error("No se encontró el input para la API key.");
